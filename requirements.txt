@@ -1,0 +1,6 @@
+datasets==2.2
+scikit-learn>=1.1
+pandas>=1.3
+nltk==3.6
+matplotlib
+gensim>=4.2
