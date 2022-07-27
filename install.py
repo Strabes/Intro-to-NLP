@@ -24,3 +24,9 @@ def install_requirements():
         raise Exception("Failed to install Git LFS and soundfile")
     else:
         print("Git LFS installed!")
+    print("Downloading nltk data")
+    try:
+        import nltk
+        nltk.download("punkt")
+    except:
+        print("Failed to download nltk data")
