@@ -382,6 +382,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
   <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+  <script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -424,10 +425,7 @@
 </section>
 <section id="setting-up-google-colab-runtime" class="slide level2">
 <h2>Setting up Google Colab runtime</h2>
-</section>
-<section class="slide level2">
-
-<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="1">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;-&quot;}" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Set up Google Colab runtime</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> sys</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="im">import</span> warnings</span>
@@ -454,7 +452,7 @@
 <section id="newsgroups-dataset" class="slide level2">
 <h2>20 Newsgroups Dataset</h2>
 <p>The 20 Newsgroups dataset is a classic dataset in NLP for document classification experiments. It consists of ~20K newsgroup posts that are classified into 20 topics.</p>
-<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;-&quot;}" data-execution_count="2">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;-&quot;}" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_20newsgroups</span>
 <span id="cb2-2"><a href="#cb2-2"></a></span>
 <span id="cb2-3"><a href="#cb2-3"></a>d_train <span class="op">=</span> fetch_20newsgroups(</span>
@@ -478,7 +476,7 @@
 </section>
 <section id="example-texts-form-20-newsgroups" class="slide level2">
 <h2>Example texts form 20 Newsgroups</h2>
-<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;-&quot;}" data-execution_count="3">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;-&quot;}" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="cf">for</span> text <span class="kw">in</span> d_train[<span class="st">"data"</span>][:<span class="dv">3</span>]:</span>
 <span id="cb4-2"><a href="#cb4-2"></a>    <span class="bu">print</span>(<span class="st">"-"</span><span class="op">*</span><span class="dv">50</span>)</span>
 <span id="cb4-3"><a href="#cb4-3"></a>    <span class="bu">print</span>(text.replace(<span class="st">"</span><span class="ch">\\</span><span class="st">"</span>,<span class="st">" "</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -538,10 +536,10 @@ Tom Willis     twillis@ecn.purdue.edu         Purdue Electrical Engineering</cod
 </div>
 </div>
 </section>
-<section class="slide level2">
-
+<section id="tokenization" class="slide level2">
+<h2>Tokenization</h2>
 <p>NLP requires converting natural language documents to numeric representations and performing computations on these representations. The first step to <strong>encoding</strong> documents into numeric representations is breaking the documents down into smaller units via <strong>tokenization</strong>. One obvious method of tokenization is <strong>word tokenization</strong>:</p>
-<div class="cell" data-execution_count="4">
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="im">import</span> nltk</span>
 <span id="cb6-2"><a href="#cb6-2"></a></span>
 <span id="cb6-3"><a href="#cb6-3"></a>example <span class="op">=</span> d_train[<span class="st">"data"</span>][<span class="dv">0</span>]</span>
@@ -567,30 +565,30 @@ have on this funky looking car, please e-mail.
 </div>
 </div>
 </section>
-<section class="slide level2">
-
+<section id="vocabulary" class="slide level2">
+<h2>Vocabulary</h2>
 <p>We then create a <strong>vocabulary</strong> that maps tokens to indices:</p>
-<div class="cell" data-execution_count="5">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="im">from</span> itertools <span class="im">import</span> islice</span>
 <span id="cb8-2"><a href="#cb8-2"></a><span class="bu">dict</span>(islice({j:i <span class="cf">for</span> i,j <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">set</span>(example_tokenized))}.items(),<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
-<pre><code>{'be': 0,
- 'me': 1,
- '.': 2,
- 'front': 3,
- 'car': 4,
- 'to': 5,
- 'could': 6,
- '60s/': 7,
- 'a': 8,
- 'can': 9}</code></pre>
+<pre><code>{'know': 0,
+ 'be': 1,
+ 'production': 2,
+ 'were': 3,
+ 'enlighten': 4,
+ 'this': 5,
+ 'saw': 6,
+ 'late': 7,
+ 'all': 8,
+ 'tellme': 9}</code></pre>
 </div>
 </div>
 </section>
-<section class="slide level2">
-
+<section id="building-a-vocabulary-from-a-corpus" class="slide level2">
+<h2>Building a vocabulary from a corpus</h2>
 <p>Of course we do not use just a single document to create our vocabulary, but a collection of documents, called a <strong>corpus</strong>. We also need to specify a maximum number of tokens for our vocabulary.</p>
-<div class="cell" data-execution_count="6">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer</span>
 <span id="cb10-2"><a href="#cb10-2"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb10-3"><a href="#cb10-3"></a></span>
@@ -625,7 +623,7 @@ have on this funky looking car, please e-mail.
 <h2>Classical NLP</h2>
 <p>Many traditional statistical and machine learning models expect data to be in a tabular format where columns correspond to specific features and rows correspond to individual observations (in the case of NLP, each document is treated as an individual observation).</p>
 <p>A common method of transforming a corpus of documents into a tabular format is <strong>bag-of-words</strong> where each column in the table represents a given word (token) and the entry in row i, column j is the count of times word j occurs in document i.</p>
-<div class="cell" data-execution_count="7">
+<div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>pd.DataFrame(</span>
 <span id="cb13-2"><a href="#cb13-2"></a>    count_vectorizer.transform(d_train[<span class="st">"data"</span>][:<span class="dv">1000</span>]).toarray(),</span>
 <span id="cb13-3"><a href="#cb13-3"></a>    columns <span class="op">=</span> count_vectorizer.get_feature_names_out().tolist())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -957,10 +955,9 @@ have on this funky looking car, please e-mail.
 </ul></li>
 </ol>
 </section>
-<section class="slide level2">
-
-<h3 id="stopwords">Stopwords</h3>
-<div class="cell" data-execution_count="8">
+<section id="stopwords" class="slide level2">
+<h2>Stopwords</h2>
+<div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a><span class="im">import</span> sklearn</span>
 <span id="cb14-2"><a href="#cb14-2"></a></span>
 <span id="cb14-3"><a href="#cb14-3"></a>ENGLISH_STOP_WORDS <span class="op">=</span> sklearn.feature_extraction._stop_words.ENGLISH_STOP_WORDS</span>
@@ -970,15 +967,14 @@ have on this funky looking car, please e-mail.
 <div class="cell-output cell-output-stdout">
 <pre><code>Here are the stopwords we'll remove:
 
-me, however, could, together, would, elsewhere, co, others, five, here, these, system, with, was, several, we, anyhow, whence, now, besides, behind, sixty, whom, made, whenever, next, whereas, most, ours, inc, first, whether, interest, six, many, into, another, as, re, only, whereupon, should, myself, beside, moreover, find, ever, whereby, from, toward, well, take, over, between, front, con, a, either, mine, please, few, formerly, thick, four, again, former, same, due, someone, may, be, less, couldnt, while, thru, there, ten, then, anyway, fifteen, along, if, off, therefore, onto, thence, anything, mill, sometimes, yourselves, sincere, being, thus, both, neither, hereby, her, why, move, three, seemed, within, the, hence, up, go, what, even, their, nor, though, nevertheless, forty, is, thereupon, meanwhile, get, call, himself, see, amount, hereupon, mostly, twelve, becomes, eg, towards, no, cant, per, own, each, keep, been, eleven, otherwise, everything, too, every, etc, him, also, noone, indeed, where, am, wherein, often, at, so, our, eight, cry, she, done, among, us, fill, give, bottom, about, themselves, you, further, which, have, detail, anywhere, everywhere, they, anyone, whatever, latterly, latter, amoungst, ie, hasnt, around, whose, herein, more, always, perhaps, hundred, top, he, everyone, beyond, becoming, namely, thereby, in, via, through, has, still, afterwards, found, throughout, whereafter, something, because, than, name, herself, thin, one, twenty, under, seems, very, above, none, serious, since, sometime, beforehand, nothing, describe, down, alone, much, bill, whither, put, of, or, this, hers, its, de, must, how, except, can, show, them, two, on, else, such, side, nine, it, whoever, back, third, became, were, once, part, across, empty, without, fire, ourselves, below, but, until, yet, never, my, fifty, during, rather, are, yourself, other, who, when, last, somehow, yours, itself, to, ltd, whole, un, thereafter, full, after, least, upon, some, and, already, might, out, hereafter, nowhere, for, by, had, do, an, his, amongst, become, cannot, therein, against, not, your, seeming, seem, will, all, nobody, any, those, before, i, almost, wherever, enough, somewhere, that, although</code></pre>
+each, indeed, back, without, mostly, sincere, thereby, fifty, eleven, due, wherever, should, go, his, everyone, another, at, through, well, fill, former, all, that, ltd, nothing, part, twenty, becomes, five, formerly, put, became, only, sometimes, themselves, be, several, then, hasnt, else, cannot, noone, there, amongst, along, someone, beyond, against, an, those, thereupon, except, four, am, out, over, ever, neither, nevertheless, together, hereafter, thick, where, although, whereupon, them, among, whole, until, anyone, otherwise, least, please, herein, since, forty, do, found, her, call, whereas, become, somehow, however, mill, every, give, been, others, once, bill, twelve, throughout, ten, behind, from, mine, have, therefore, whoever, hereupon, might, further, here, across, anyhow, often, thin, also, whom, alone, seeming, most, rather, beside, less, thus, below, everything, onto, under, hers, keep, why, more, nowhere, moreover, anything, whose, being, wherein, on, one, fifteen, may, name, see, both, thereafter, their, still, re, are, again, or, per, could, six, many, upon, seem, was, even, amount, this, while, after, whether, anyway, how, into, whereafter, such, never, via, top, move, as, the, last, ie, him, latterly, must, none, enough, because, ours, get, always, about, whatever, system, would, had, hereby, your, before, these, elsewhere, everywhere, nor, up, by, afterwards, in, during, my, un, for, already, thence, us, serious, our, something, you, de, a, nobody, within, con, will, same, between, myself, much, not, made, which, is, take, can, either, few, its, inc, becoming, full, third, around, show, other, describe, if, meanwhile, me, two, who, when, eight, they, though, yourself, anywhere, now, himself, ourselves, whence, yours, latter, co, detail, above, some, sometime, whereby, has, whither, of, toward, so, whenever, seems, done, with, than, down, off, beforehand, very, i, perhaps, therein, thru, somewhere, own, he, fire, eg, sixty, any, hundred, bottom, she, almost, yet, we, find, no, towards, yourselves, first, hence, herself, etc, and, next, it, interest, were, besides, empty, seemed, too, cant, nine, what, cry, amoungst, couldnt, three, namely, side, but, front, itself, to</code></pre>
 </div>
 </div>
 </section>
-<section class="slide level2">
-
-<h3 id="stemming">Stemming</h3>
+<section id="stemming" class="slide level2">
+<h2>Stemming</h2>
 <p>We’ll use the Porter stemmer for word stemming:</p>
-<div class="cell" data-execution_count="9">
+<div class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a><span class="im">from</span> nltk.stem.porter <span class="im">import</span> PorterStemmer</span>
 <span id="cb16-2"><a href="#cb16-2"></a>porter_stemmer <span class="op">=</span> PorterStemmer()</span>
 <span id="cb16-3"><a href="#cb16-3"></a></span>
@@ -994,9 +990,9 @@ The stem of 'stopped' is 'stop'</code></pre>
 </div>
 </div>
 </section>
-<section class="slide level2">
-
-<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="10">
+<section id="final-tokenizer-and-vocabulary" class="slide level2">
+<h2>Final tokenizer and vocabulary</h2>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;-&quot;}" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a><span class="im">import</span> re</span>
 <span id="cb18-2"><a href="#cb18-2"></a><span class="im">import</span> sklearn</span>
 <span id="cb18-3"><a href="#cb18-3"></a></span>
@@ -1346,7 +1342,7 @@ The stem of 'stopped' is 'stop'</code></pre>
 <section id="n-grams" class="slide level2">
 <h2>N-grams</h2>
 <p>One of the primary downsides of bag-of-words is that it loses all information contained in the order of the tokens. For example, both “Dog bites man” and “Man bites dog” produce the same bag-of-words representation. One method for partially overcoming this shortcoming is to use <strong>n-grams</strong>; the creation of a new token by combining <code>n</code> consecutive tokens</p>
-<div class="cell" data-execution_count="11">
+<div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a><span class="im">import</span> random</span>
 <span id="cb19-2"><a href="#cb19-2"></a>random.seed(<span class="dv">1</span>)</span>
 <span id="cb19-3"><a href="#cb19-3"></a></span>
@@ -1376,7 +1372,7 @@ The stem of 'stopped' is 'stop'</code></pre>
 <section id="text-classification-with-logistic-regression" class="slide level2">
 <h2>Text Classification with Logistic Regression</h2>
 <p>Finally we can use our matrix of vectorized texts to fit a logistic regression model for topic classification. We pipe the output of our <code>CountVectorizer</code> through a <code>TfidfTransformer</code> (Term Frequency Inverse Document Frequency) object that normalizes document-level token counts by corpus-level token frequency. This is then piped into a logistic regression classifier. We fit our pipeline on the training data.</p>
-<div class="cell" data-execution_count="12">
+<div class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
 <span id="cb21-2"><a href="#cb21-2"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfTransformer</span>
 <span id="cb21-3"><a href="#cb21-3"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
@@ -1391,30 +1387,27 @@ The stem of 'stopped' is 'stop'</code></pre>
 <style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Pipeline(steps=[('count_vectorizer',
                  CountVectorizer(max_df=0.5, max_features=2000, min_df=0.0001,
                                  ngram_range=(1, 4),
-                                 tokenizer=&lt;function word_tokenize at 0x000001408451A940&gt;)),
+                                 tokenizer=&lt;function word_tokenize at 0x0000014B317B5940&gt;)),
                 ('tfidf_transformer', TfidfTransformer()),
                 ('logistic_reg',
                  LogisticRegression(multi_class='multinomial'))])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox"><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('count_vectorizer',
                  CountVectorizer(max_df=0.5, max_features=2000, min_df=0.0001,
                                  ngram_range=(1, 4),
-                                 tokenizer=&lt;function word_tokenize at 0x000001408451A940&gt;)),
+                                 tokenizer=&lt;function word_tokenize at 0x0000014B317B5940&gt;)),
                 ('tfidf_transformer', TfidfTransformer()),
                 ('logistic_reg',
                  LogisticRegression(multi_class='multinomial'))])</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox"><label for="sk-estimator-id-2" class="sk-toggleable__label sk-toggleable__label-arrow">CountVectorizer</label><div class="sk-toggleable__content"><pre>CountVectorizer(max_df=0.5, max_features=2000, min_df=0.0001,
                 ngram_range=(1, 4),
-                tokenizer=&lt;function word_tokenize at 0x000001408451A940&gt;)</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox"><label for="sk-estimator-id-3" class="sk-toggleable__label sk-toggleable__label-arrow">TfidfTransformer</label><div class="sk-toggleable__content"><pre>TfidfTransformer()</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox"><label for="sk-estimator-id-4" class="sk-toggleable__label sk-toggleable__label-arrow">LogisticRegression</label><div class="sk-toggleable__content"><pre>LogisticRegression(multi_class='multinomial')</pre></div></div></div></div></div></div></div>
+                tokenizer=&lt;function word_tokenize at 0x0000014B317B5940&gt;)</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox"><label for="sk-estimator-id-3" class="sk-toggleable__label sk-toggleable__label-arrow">TfidfTransformer</label><div class="sk-toggleable__content"><pre>TfidfTransformer()</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox"><label for="sk-estimator-id-4" class="sk-toggleable__label sk-toggleable__label-arrow">LogisticRegression</label><div class="sk-toggleable__content"><pre>LogisticRegression(multi_class='multinomial')</pre></div></div></div></div></div></div></div>
 </div>
 </div>
-</section>
-<section class="slide level2">
-
 <p>We evaluate the model using precision and recall. For a given topic:</p>
 <ul>
 <li><p><strong>Precision</strong> is the number of times we predicted that topic correctly divided by the number of times we predicted that topic (both correctly and incorrectly).</p></li>
 <li><p><strong>Recall</strong> is the number of times we predicted that topic correctly divided by the number of actual cases of the topic.</p></li>
 </ul>
 <p>A model that just guessed randomly and uniformly on our dataset would have both precision and recall close to 0.05. Our simple model is already much better than that:</p>
-<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;-&quot;}" data-execution_count="13">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;-&quot;}" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report</span>
 <span id="cb22-2"><a href="#cb22-2"></a></span>
 <span id="cb22-3"><a href="#cb22-3"></a>test_preds <span class="op">=</span> pipe.predict(d_test[<span class="st">"data"</span>])</span>
@@ -1463,7 +1456,7 @@ comp.sys.ibm.pc.hardware       0.58      0.56      0.57       392
 </section>
 <section class="slide level2">
 
-<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="14">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> LatentDirichletAllocation</span>
 <span id="cb24-2"><a href="#cb24-2"></a></span>
 <span id="cb24-3"><a href="#cb24-3"></a>n_components <span class="op">=</span> <span class="dv">20</span></span>
@@ -1486,65 +1479,52 @@ comp.sys.ibm.pc.hardware       0.58      0.56      0.57       392
 <style>#sk-container-id-2 {color: black;background-color: white;}#sk-container-id-2 pre{padding: 0;}#sk-container-id-2 div.sk-toggleable {background-color: white;}#sk-container-id-2 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-2 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-2 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-2 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-2 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-2 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-2 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-2 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-2 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-2 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-2 div.sk-item {position: relative;z-index: 1;}#sk-container-id-2 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-2 div.sk-item::before, #sk-container-id-2 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-2 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-2 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-2 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-2 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-2 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-2 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-2 div.sk-label-container {text-align: center;}#sk-container-id-2 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-2 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Pipeline(steps=[('count_vectorizer',
                  CountVectorizer(max_df=0.5, max_features=2000, min_df=0.0001,
                                  ngram_range=(1, 4),
-                                 tokenizer=&lt;function word_tokenize at 0x000001408451A940&gt;)),
+                                 tokenizer=&lt;function word_tokenize at 0x0000014B317B5940&gt;)),
                 ('tfidf_transformer', TfidfTransformer()),
                 ('lda',
                  LatentDirichletAllocation(n_components=20, random_state=0))])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-5" type="checkbox"><label for="sk-estimator-id-5" class="sk-toggleable__label sk-toggleable__label-arrow">Pipeline</label><div class="sk-toggleable__content"><pre>Pipeline(steps=[('count_vectorizer',
                  CountVectorizer(max_df=0.5, max_features=2000, min_df=0.0001,
                                  ngram_range=(1, 4),
-                                 tokenizer=&lt;function word_tokenize at 0x000001408451A940&gt;)),
+                                 tokenizer=&lt;function word_tokenize at 0x0000014B317B5940&gt;)),
                 ('tfidf_transformer', TfidfTransformer()),
                 ('lda',
                  LatentDirichletAllocation(n_components=20, random_state=0))])</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-6" type="checkbox"><label for="sk-estimator-id-6" class="sk-toggleable__label sk-toggleable__label-arrow">CountVectorizer</label><div class="sk-toggleable__content"><pre>CountVectorizer(max_df=0.5, max_features=2000, min_df=0.0001,
                 ngram_range=(1, 4),
-                tokenizer=&lt;function word_tokenize at 0x000001408451A940&gt;)</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-7" type="checkbox"><label for="sk-estimator-id-7" class="sk-toggleable__label sk-toggleable__label-arrow">TfidfTransformer</label><div class="sk-toggleable__content"><pre>TfidfTransformer()</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-8" type="checkbox"><label for="sk-estimator-id-8" class="sk-toggleable__label sk-toggleable__label-arrow">LatentDirichletAllocation</label><div class="sk-toggleable__content"><pre>LatentDirichletAllocation(n_components=20, random_state=0)</pre></div></div></div></div></div></div></div>
+                tokenizer=&lt;function word_tokenize at 0x0000014B317B5940&gt;)</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-7" type="checkbox"><label for="sk-estimator-id-7" class="sk-toggleable__label sk-toggleable__label-arrow">TfidfTransformer</label><div class="sk-toggleable__content"><pre>TfidfTransformer()</pre></div></div></div><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-8" type="checkbox"><label for="sk-estimator-id-8" class="sk-toggleable__label sk-toggleable__label-arrow">LatentDirichletAllocation</label><div class="sk-toggleable__content"><pre>LatentDirichletAllocation(n_components=20, random_state=0)</pre></div></div></div></div></div></div></div>
 </div>
 </div>
 </section>
 <section class="slide level2">
 
-<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
-<span id="cb25-2"><a href="#cb25-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb25-3"><a href="#cb25-3"></a></span>
-<span id="cb25-4"><a href="#cb25-4"></a><span class="kw">def</span> plot_top_words(model, feature_names, n_top_words, title):</span>
-<span id="cb25-5"><a href="#cb25-5"></a>    rows <span class="op">=</span> <span class="bu">int</span>(np.ceil(<span class="bu">len</span>(model.components_)<span class="op">/</span><span class="dv">5</span>))</span>
-<span id="cb25-6"><a href="#cb25-6"></a>    fig, axes <span class="op">=</span> plt.subplots(rows, <span class="dv">5</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">8</span><span class="op">*</span>rows), sharex<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb25-7"><a href="#cb25-7"></a>    axes <span class="op">=</span> axes.flatten()</span>
-<span id="cb25-8"><a href="#cb25-8"></a>    <span class="cf">for</span> topic_idx, topic <span class="kw">in</span> <span class="bu">enumerate</span>(model.components_): <span class="co">#[:10,:]</span></span>
-<span id="cb25-9"><a href="#cb25-9"></a>        top_features_ind <span class="op">=</span> topic.argsort()[: <span class="op">-</span>n_top_words <span class="op">-</span> <span class="dv">1</span> : <span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb25-10"><a href="#cb25-10"></a>        top_features <span class="op">=</span> [feature_names[i] <span class="cf">for</span> i <span class="kw">in</span> top_features_ind]</span>
-<span id="cb25-11"><a href="#cb25-11"></a>        weights <span class="op">=</span> topic[top_features_ind]</span>
-<span id="cb25-12"><a href="#cb25-12"></a></span>
-<span id="cb25-13"><a href="#cb25-13"></a>        ax <span class="op">=</span> axes[topic_idx]</span>
-<span id="cb25-14"><a href="#cb25-14"></a>        ax.barh(top_features, weights, height<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb25-15"><a href="#cb25-15"></a>        ax.set_title(<span class="ss">f"Topic </span><span class="sc">{</span>topic_idx <span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>, fontdict<span class="op">=</span>{<span class="st">"fontsize"</span>: <span class="dv">30</span>})</span>
-<span id="cb25-16"><a href="#cb25-16"></a>        ax.invert_yaxis()</span>
-<span id="cb25-17"><a href="#cb25-17"></a>        ax.tick_params(axis<span class="op">=</span><span class="st">"both"</span>, which<span class="op">=</span><span class="st">"major"</span>, labelsize<span class="op">=</span><span class="dv">20</span>)</span>
-<span id="cb25-18"><a href="#cb25-18"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="st">"top right left"</span>.split():</span>
-<span id="cb25-19"><a href="#cb25-19"></a>            ax.spines[i].set_visible(<span class="va">False</span>)</span>
-<span id="cb25-20"><a href="#cb25-20"></a>        fig.suptitle(title, fontsize<span class="op">=</span><span class="dv">40</span>)</span>
-<span id="cb25-21"><a href="#cb25-21"></a></span>
-<span id="cb25-22"><a href="#cb25-22"></a>    plt.subplots_adjust(top<span class="op">=</span><span class="fl">0.95</span>, bottom<span class="op">=</span><span class="fl">0.05</span>, wspace<span class="op">=</span><span class="fl">0.95</span>, hspace<span class="op">=</span><span class="fl">0.05</span>)</span>
-<span id="cb25-23"><a href="#cb25-23"></a>    plt.show()</span>
-<span id="cb25-24"><a href="#cb25-24"></a></span>
-<span id="cb25-25"><a href="#cb25-25"></a>n_top_words<span class="op">=</span><span class="dv">10</span></span>
-<span id="cb25-26"><a href="#cb25-26"></a>tf_feature_names <span class="op">=</span> lda_pipe[<span class="st">"count_vectorizer"</span>].get_feature_names_out()</span>
-<span id="cb25-27"><a href="#cb25-27"></a>plot_top_words(lda_pipe[<span class="st">"lda"</span>], tf_feature_names, n_top_words, <span class="st">"Topics in LDA model"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
+<div class="cell" data-fig-height="10" data-fig-width="10" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a><span class="im">from</span> utils <span class="im">import</span> plot_top_words</span>
+<span id="cb25-2"><a href="#cb25-2"></a>n_top_words<span class="op">=</span><span class="dv">10</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>tf_feature_names <span class="op">=</span> lda_pipe[<span class="st">"count_vectorizer"</span>].get_feature_names_out()</span>
+<span id="cb25-4"><a href="#cb25-4"></a>fig <span class="op">=</span> plot_top_words(lda_pipe[<span class="st">"lda"</span>], tf_feature_names, n_top_words, <span class="st">"Topics in LDA model"</span>)</span>
+<span id="cb25-5"><a href="#cb25-5"></a></span>
+<span id="cb25-6"><a href="#cb25-6"></a><span class="co">#fig.tight_layout();</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="top-tokens-per-topic" class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Intro%20to%20NLP_files/figure-revealjs/top-tokens-per-topic-output-1.png" width="1315" height="2911"></p>
+<p></p><figcaption>Top token for each discovered topic</figcaption><p></p>
+</figure>
 </div>
-<img data-src="Intro%20to%20NLP_files/figure-revealjs/top-tokens-per-topic-output-1.png" class="r-stretch quarto-figure-center"><p class="caption">Top token for each discovered topic</p></section>
+</div>
+</div>
+</section>
 <section class="slide level2">
 
-<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="16">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>lda_test_preds <span class="op">=</span> lda_pipe.transform(d_test[<span class="st">"data"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;-&quot;}" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> ListedColormap, to_hex</span>
-<span id="cb27-2"><a href="#cb27-2"></a>tab20 <span class="op">=</span> plt.get_cmap(<span class="st">"tab20"</span>)</span>
-<span id="cb27-3"><a href="#cb27-3"></a>lcm <span class="op">=</span> ListedColormap(tab20(<span class="bu">range</span>(<span class="dv">20</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;-&quot;}" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="im">from</span> matplotlib.colors <span class="im">import</span> ListedColormap, to_hex</span>
+<span id="cb27-3"><a href="#cb27-3"></a>tab20 <span class="op">=</span> plt.get_cmap(<span class="st">"tab20"</span>)</span>
+<span id="cb27-4"><a href="#cb27-4"></a>lcm <span class="op">=</span> ListedColormap(tab20(<span class="bu">range</span>(<span class="dv">20</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="18">
+<div class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">15</span>,<span class="dv">10</span>))</span>
 <span id="cb28-2"><a href="#cb28-2"></a><span class="cf">for</span> row <span class="kw">in</span> (pd.DataFrame(lda_test_preds)</span>
 <span id="cb28-3"><a href="#cb28-3"></a>  .assign(target <span class="op">=</span> d_test[<span class="st">"target"</span>])</span>
@@ -1558,14 +1538,16 @@ comp.sys.ibm.pc.hardware       0.58      0.56      0.57       392
 <span id="cb28-11"><a href="#cb28-11"></a>handles <span class="op">=</span> [patches.Patch(color <span class="op">=</span> lcm(i), label<span class="op">=</span>d_test[<span class="st">"target_names"</span>][i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>)]</span>
 <span id="cb28-12"><a href="#cb28-12"></a>ax.legend(handles<span class="op">=</span>handles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
-<pre><code>&lt;matplotlib.legend.Legend at 0x1408ff177c0&gt;</code></pre>
+<pre><code>&lt;matplotlib.legend.Legend at 0x14b0b4dcee0&gt;</code></pre>
 </div>
-
+<div class="cell-output cell-output-display">
+<p><img data-src="Intro%20to%20NLP_files/figure-revealjs/cell-19-output-2.png" width="1166" height="766"></p>
 </div>
-<img data-src="Intro%20to%20NLP_files/figure-revealjs/cell-19-output-2.png" class="r-stretch"></section>
+</div>
+</section>
 <section class="slide level2">
 
-<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="19">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1"></a><span class="im">from</span> sklearn <span class="im">import</span> manifold</span>
 <span id="cb30-2"><a href="#cb30-2"></a>tsne <span class="op">=</span> manifold.TSNE(</span>
 <span id="cb30-3"><a href="#cb30-3"></a>        n_components<span class="op">=</span><span class="dv">2</span>,</span>
@@ -1577,18 +1559,20 @@ comp.sys.ibm.pc.hardware       0.58      0.56      0.57       392
 <span id="cb30-9"><a href="#cb30-9"></a>    )</span>
 <span id="cb30-10"><a href="#cb30-10"></a>Y <span class="op">=</span> tsne.fit_transform(lda_test_preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="20">
+<div class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1"></a>plt.scatter(Y[:,<span class="dv">0</span>],Y[:,<span class="dv">1</span>],</span>
 <span id="cb31-2"><a href="#cb31-2"></a>c<span class="op">=</span>d_test[<span class="st">"target"</span>],</span>
 <span id="cb31-3"><a href="#cb31-3"></a>cmap<span class="op">=</span><span class="st">"tab20"</span></span>
 <span id="cb31-4"><a href="#cb31-4"></a><span class="co">#c=[d_test["target_names"][i] for i in d_test["target"]]</span></span>
 <span id="cb31-5"><a href="#cb31-5"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
-<pre><code>&lt;matplotlib.collections.PathCollection at 0x252913307c0&gt;</code></pre>
+<pre><code>&lt;matplotlib.collections.PathCollection at 0x14b497abf40&gt;</code></pre>
 </div>
-
+<div class="cell-output cell-output-display">
+<p><img data-src="Intro%20to%20NLP_files/figure-revealjs/cell-21-output-2.png" width="801" height="766"></p>
 </div>
-<img data-src="Intro%20to%20NLP_files/figure-revealjs/cell-21-output-2.png" class="r-stretch"></section>
+</div>
+</section>
 <section id="state-of-the-art-nlp-with-transformers" class="slide level2">
 <h2>State-of-the-Art NLP with Transformers</h2>
 <p>All state-of-the-art models in NLP are now a type of deep neural network using a variant of the architecture called a “transformer”.</p>
@@ -1607,9 +1591,8 @@ comp.sys.ibm.pc.hardware       0.58      0.56      0.57       392
 <li>Encoder-only transformer: these excel in any NLP task that does not require generating new text, for instance classification, named entity recognition and extractive question answering and summarization.</li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="decoder-only-transformers---gpt">Decoder-only Transformers - GPT</h3>
+<section id="decoder-only-transformers---gpt" class="slide level2">
+<h2>Decoder-only Transformers - GPT</h2>
 <p>In <a href="https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf">Improving Language Understanding by Generative Pre-Training</a>, Radford et al 2018 (OpenAI), used just the Transformer Decoder and introduced a novel two-stage training paradigm:</p>
 <p><strong>Pretraining (Unsupervised)</strong>: Train the model on a large corpus of unlabeled text data (typically scraped from the web). Given a chunk of text as input, the model’s objective is to predict the word that came next in the source text. For instance, the model receives the input <code>["The", "cat", "is", "on", "the"]</code> and must predict which word came next. Pretraining allows the model to learn general features of the language.</p>
 <p><strong>Fine-tuning (Supervised)</strong>: For a specific task with limited labeled training data, like classification or textual entailment, initialize a similar model architecture using the weights learned from pretraining and continue training for the specific task. This requires some creativity in formatting the input data to the model and attaching an additional output layer that is task-specific.</p>
@@ -1620,9 +1603,8 @@ comp.sys.ibm.pc.hardware       0.58      0.56      0.57       392
 <li>Google’s PaLM and LaMDA</li>
 </ul>
 </section>
-<section class="slide level2">
-
-<h3 id="encoder-only-transformers---bert">Encoder-only transformers - BERT</h3>
+<section id="encoder-only-transformers---bert" class="slide level2">
+<h2>Encoder-only transformers - BERT</h2>
 <p>Even though many languages are written and read left to right, the meaning of words and concepts in sentences flow in both directions. The Transformer Decoder-only models do not take advantage of this bidirectionality. Consider the sentence: “The bat that flew through the night air almost hit the player on deck.” If you only saw the first 8 words (“The bat that flew through the night air”) you probably have a very different understanding of “bat” than if you saw the full sentence. The correct meaning of the word “bat” in this sentence flows backwords from “the player on deck”.</p>
 <p>In <a href="https://arxiv.org/pdf/1810.04805.pdf">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</a> (Devlin et al.&nbsp;2019 - also at Google) took just the Transformer Encoder from <em>Attention is All You Need</em> and extended the pretraining/fine-tuning approach to produced models that take advantage of bidirectionality and that achieved state-of-the-art performance.</p>
 <p><strong>Pretraining (Unsupervised)</strong>: Just like in Radford et al., train the model on a large corpus of unlabeled text data. Given a chunk of text as input, the model’s objective is to predict randomly masked words. For instance, the model receives the input <code>["The", "[MASK]", "is", "on", "[MASK]", "mat"]</code> and must predict which words are under the <code>"[MASK]"</code> tokens. The original BERT paper also included another pretraining task, next sentence prediction, in which the model had to predict whether one sentence followed another in a source text. This task is generally dropped in more recent versions of BERT.</p>
@@ -1633,7 +1615,7 @@ comp.sys.ibm.pc.hardware       0.58      0.56      0.57       392
 <p>Now we’ll do an actual demo of <a href="https://arxiv.org/pdf/1912.08777.pdf">Google’s PEGASUS</a> full transformer model to perform abstractive summarization.</p>
 <p>Abstractive summarization takes a reference text as input to the transformer encoder and generates a summary using the transformer decoder.</p>
 <p>Google provides a trained PEGASUS model in the <a href="https://huggingface.co/models">Huggingface Model Hub</a>. <code>Huggingface</code> is an opensource project that provides datasets, pretrained models and software for creating, training and using models across <code>torch</code>, <code>tensorflow</code> and <code>JAX</code>.</p>
-<div class="cell" data-execution_count="21">
+<div class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1"></a><span class="im">from</span> transformers <span class="im">import</span> pipeline, set_seed</span>
 <span id="cb33-2"><a href="#cb33-2"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset, load_metric</span>
 <span id="cb33-3"><a href="#cb33-3"></a><span class="im">import</span> nltk</span>
@@ -1644,18 +1626,20 @@ comp.sys.ibm.pc.hardware       0.58      0.56      0.57       392
 <section id="cnndaily-mail-dataset" class="slide level2">
 <h2>CNN/Daily Mail Dataset</h2>
 <p>We’ll download the CNN/Daily Mail Dataset from Huggingface. The CNN/Daily Mail dataset is well-suited for abstractive summarization because CNN/Daily Mail themselves provide brief summaries of their articles.</p>
-<div class="cell" data-execution_count="22">
+<div class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1"></a>dataset <span class="op">=</span> load_dataset(<span class="st">"cnn_dailymail"</span>, version<span class="op">=</span><span class="st">"3.0.0"</span>)</span>
 <span id="cb34-2"><a href="#cb34-2"></a><span class="bu">print</span>(<span class="ss">f"Features: </span><span class="sc">{</span>dataset[<span class="st">'train'</span>]<span class="sc">.</span>column_names<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"f2b3fff2b9f24213b32f395bcce25090","version_major":2,"version_minor":0}
+</script>
+</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Features: ['article', 'highlights', 'id']</code></pre>
 </div>
 </div>
-</section>
-<section class="slide level2">
-
 <p>Here’s an example of an article and its summary:</p>
-<div class="cell" data-execution_count="23">
+<div class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1"></a>sample_idx <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb36-2"><a href="#cb36-2"></a>sample <span class="op">=</span> dataset[<span class="st">"test"</span>][sample_idx]</span>
 <span id="cb36-3"><a href="#cb36-3"></a><span class="bu">print</span>(<span class="ss">f"""</span></span>
@@ -1678,17 +1662,14 @@ Israel and the United States opposed the move, which could open the door to war 
 </section>
 <section class="slide level2">
 
-<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="24">
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1"></a><span class="co"># Download Google's PEGASUS model that was fine-tuned on CNN/Daily Mail</span></span>
 <span id="cb38-2"><a href="#cb38-2"></a></span>
 <span id="cb38-3"><a href="#cb38-3"></a>pipe <span class="op">=</span> pipeline(<span class="st">"summarization"</span>, model<span class="op">=</span><span class="st">"google/pegasus-cnn_dailymail"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section class="slide level2">
-
 <h3 id="digression-on-subword-tokenization">Digression on subword tokenization</h3>
 <p>Modern transformer models typically use a form of tokenization called subword tokenization rather than the word tokenization that we used before. This allows the model to construct rare words or words that did not occur in the training data from subword pieces rather than treating them as out-of-vocabulary:</p>
-<div class="cell" data-execution_count="25">
+<div class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1"></a>encoded <span class="op">=</span> pipe.tokenizer.encode(<span class="st">"""</span></span>
 <span id="cb39-2"><a href="#cb39-2"></a><span class="st">Hello. My name is Greg Strabel</span></span>
 <span id="cb39-3"><a href="#cb39-3"></a><span class="st">and I'm a data scientist. Supercalifragilisticexpialidocious.</span></span>
@@ -1702,11 +1683,8 @@ Israel and the United States opposed the move, which could open the door to war 
 Decoded text: Hello, ., My, name, is, Greg, Stra, bel, and, I, ', m, a, data, scientist, ., Super, cali, frag, il, istic, exp, ial, ido, cious, ., &lt;/s&gt;</code></pre>
 </div>
 </div>
-</section>
-<section class="slide level2">
-
 <h3 id="summarizing-the-example-article">Summarizing the example article</h3>
-<div class="cell" data-execution_count="26">
+<div class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1"></a>sample_text <span class="op">=</span> dataset[<span class="st">"test"</span>][sample_idx][<span class="st">"article"</span>][:<span class="dv">2000</span>]</span>
 <span id="cb41-2"><a href="#cb41-2"></a></span>
 <span id="cb41-3"><a href="#cb41-3"></a>pipe_out <span class="op">=</span> pipe(sample_text)</span>
@@ -1761,13 +1739,13 @@ The move gives the court jurisdiction over alleged crimes in Palestinian territo
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
+'smaller': true,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: false,
@@ -1912,12 +1890,15 @@ The move gives the court jurisdiction over alleged crimes in Palestinian territo
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1200,
 
         height: 700,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.5,
 
         math: {
           mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
@@ -1945,6 +1926,9 @@ The move gives the court jurisdiction over alleged crimes in Palestinian territo
           RevealZoom
         ]
       });
+    </script>
+    <script type="application/vnd.jupyter.widget-state+json">
+    {"state":{"001465fdf47b4597ad65fcb99db7299b":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"DescriptionStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"23aed4c6e5e74ff08394966f23f09a1c":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_85c660d68158497aafba7670bc3d6442","placeholder":"​","style":"IPY_MODEL_001465fdf47b4597ad65fcb99db7299b","value":" 3/3 [00:00&lt;00:00,  3.42it/s]"}},"33a6635f98b3423ab18c0193f5569e1c":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"FloatProgressModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"FloatProgressModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"ProgressView","bar_style":"success","description":"","description_tooltip":null,"layout":"IPY_MODEL_815008ae89544623bc1d1fa912801296","max":3,"min":0,"orientation":"horizontal","style":"IPY_MODEL_4f1143b85c9e4aa8b31ff558851a5d91","value":3}},"4f1143b85c9e4aa8b31ff558851a5d91":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"ProgressStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"ProgressStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","bar_color":null,"description_width":""}},"5b2021a5f57a412ca3d2a4c79a4f39c8":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"815008ae89544623bc1d1fa912801296":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"85c660d68158497aafba7670bc3d6442":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"aa9e87af13844db88baff020f2a1df16":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"HTMLModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HTMLModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HTMLView","description":"","description_tooltip":null,"layout":"IPY_MODEL_5b2021a5f57a412ca3d2a4c79a4f39c8","placeholder":"​","style":"IPY_MODEL_cfcaeec476e1477380365c61656850df","value":"100%"}},"ce35a98429f34742aa75db6e30229887":{"model_module":"@jupyter-widgets/base","model_module_version":"1.2.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"1.2.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"overflow_x":null,"overflow_y":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"cfcaeec476e1477380365c61656850df":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"DescriptionStyleModel","state":{"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"DescriptionStyleModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"1.2.0","_view_name":"StyleView","description_width":""}},"f2b3fff2b9f24213b32f395bcce25090":{"model_module":"@jupyter-widgets/controls","model_module_version":"1.5.0","model_name":"HBoxModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/controls","_model_module_version":"1.5.0","_model_name":"HBoxModel","_view_count":null,"_view_module":"@jupyter-widgets/controls","_view_module_version":"1.5.0","_view_name":"HBoxView","box_style":"","children":["IPY_MODEL_aa9e87af13844db88baff020f2a1df16","IPY_MODEL_33a6635f98b3423ab18c0193f5569e1c","IPY_MODEL_23aed4c6e5e74ff08394966f23f09a1c"],"layout":"IPY_MODEL_ce35a98429f34742aa75db6e30229887"}}},"version_major":2,"version_minor":0}
     </script>
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
